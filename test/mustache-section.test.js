@@ -20,3 +20,46 @@ test('Coba Mustache Sections Not Show', async () => {
   console.info(data);
   expect(data).not.toContain('Khalid Shalahuddin Akbar');
 });
+
+test('Menampilkan data list', async () => {
+  const template = await fs.readFile('./templates/hobbies.mustache').then(data => data.toString());
+  const data = Mustache.render(template, {
+    hobbies: ['Programming', 'Listening Music', 'Swimming'],
+  });
+
+  console.info(data);
+  expect(data).toContain('Programming');
+});
+
+test('Menampilkan data list object', async () => {
+  const template = await fs.readFile('./templates/students.mustache').then(data => data.toString());
+  const data = Mustache.render(template, {
+    students: [
+      {nama: 'Dzikri Nur Akbar', jurusan: 'Teknik Informatika'},
+      {nama: 'Khalid Shalahuddin Akbar', jurusan: 'Hadits'},
+      {nama: 'Bilal Shalahuddin Akbar', jurusan: 'Fiqh'},
+    ],
+  });
+
+  console.info(data);
+  expect(data).toContain('Dzikri');
+  expect(data).toContain('Khalid');
+  expect(data).toContain('Bilal');
+  expect(data).toContain('Informatika');
+  expect(data).toContain('Hadits');
+  expect(data).toContain('Fiqh');
+});
+
+test('Mustache Functions', () => {
+  const params = {
+    nama: 'Dzikri Nur Akbar',
+    upper: () => {
+      return (text, render) => {
+        return render(text).toUpperCase();
+      }
+    },
+  }
+
+  const data = Mustache.render('Hello, {{#upper}}{{nama}}{{/upper}}', params)
+  console.info(data);
+});
