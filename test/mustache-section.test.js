@@ -60,6 +60,18 @@ test('Mustache Functions', () => {
     },
   }
 
-  const data = Mustache.render('Hello, {{#upper}}{{nama}}{{/upper}}', params)
+  const data = Mustache.render('Hello, {{#upper}}{{nama}}{{/upper}}', params);
   console.info(data);
+});
+
+test('Komentar pada mustache file', async () => {
+  const template = await fs.readFile('./templates/hello.mustache').then(data => data.toString());
+  const data = Mustache.render(template, {
+    title: 'Judul',
+    name: 'Dzikri Nur Akbar',
+  });
+  console.info(data);
+
+  expect(data).toContain('Dzikri Nur Akbar');
+  expect(data).not.toContain('Komentar');
 });
